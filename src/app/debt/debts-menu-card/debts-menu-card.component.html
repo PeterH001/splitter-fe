@@ -1,0 +1,18 @@
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <div class="row">
+          <i class="bi bi-cash-coin" style="font-size: 1.5rem"></i>
+        </div>
+      </div>
+      <div class="col flex-d justify-content-center">
+        <div class="row">
+            <span>
+                You owe {{ amount }} {{ currency }} to {{ payerName }} in group <b (click)="navigateToGroup(groupId)">{{ groupName }}</b> for <b (click)="navigateToExpense(expenseId)">{{ expenseName }}</b>
+            </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

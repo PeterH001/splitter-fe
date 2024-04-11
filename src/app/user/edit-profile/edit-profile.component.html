@@ -1,0 +1,105 @@
+<div class="row mb-4 mt-4">
+    <div class="col-auto">
+      <button
+        type="button"
+        class="btn btn-primary rounded-circle"
+        title="Back"
+        (click)="goBack()"
+      >
+        <i class="bi bi-arrow-left" style="font-size: 1.5rem; color: white"></i>
+      </button>
+    </div>
+    <div class="col text-center">
+      <span class="display-4">Add new expense</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-md-5">
+      <form [formGroup]="userDataForm" (ngSubmit)="submitForm()">
+        <div class="row mb-2">
+          <div class="col">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                formControlName="username"
+                value="userData.username"
+                required
+              />
+              <div
+                *ngIf="username?.invalid && (username?.dirty || username?.touched)"
+                class="alert alert-danger"
+              >
+                <div *ngIf="username?.errors?.['required']">Username is required.</div>
+                <div *ngIf="username?.errors?.['usernameTaken']">Username is already in use.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                formControlName="email"
+                value="userData.email"
+                required
+              />
+              <div
+                *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+                class="alert alert-danger"
+              >
+                <div *ngIf="email?.errors?.['required']">Email is required.</div>
+                <div *ngIf="email?.errors?.['email']">Give a valid email address.</div>
+                <div *ngIf="email?.errors?.['emailTaken']">Email is already in use.</div>
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">
+            <div class="form-group">
+              <label for="firstName">First name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName"
+                name="firstName"
+                formControlName="firstName"
+                value="userData.firstName"
+              />
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="lastName">Last name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="lastName"
+                name="lastName"
+                formControlName="lastName"
+                value="userData.lastName"
+              />
+            </div>
+        </div>
+        <div class="row mb-2">
+          
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!userDataForm.valid">
+          Save profile
+        </button>
+      </form>
+    </div>
+    <div class="col"></div>
+  </div>
+  

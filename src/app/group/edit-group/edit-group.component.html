@@ -1,0 +1,213 @@
+<div class="row mb-4 mt-2">
+  <div class="col-auto">
+    <button
+      type="button"
+      class="btn btn-primary rounded-circle"
+      title="Back"
+      (click)="goBack()"
+    >
+      <i class="bi bi-arrow-left" style="font-size: 1.5rem; color: white"></i>
+    </button>
+  </div>
+  <div class="col">
+    <h1 class="text-center">Edit group</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col"></div>
+  <div class="col-md-5">
+    <div class="row mb-2">
+      <form [formGroup]="editGroupForm" (ngSubmit)="submitForm()">
+        <div class="row mb-2">
+          <div class="col">
+            <div class="form-group">
+              <label for="groupName">Group name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="groupName"
+                name="groupName"
+                formControlName="groupName"
+                required
+              />
+              <div
+                *ngIf="
+                  groupName?.invalid && (groupName?.dirty || groupName?.touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="groupName?.errors?.['required']">
+                  Name is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">
+            <label for="memberList">Members</label>
+            <ul class="list-group" id="memberList">
+              <ng-container *ngFor="let member of groupDetails.members">
+                <li class="list-group-item d-flex justify-content-between">
+                  <p>{{ member.username }}</p><button type="button" class="btn btn-sm btn-danger" (click)="open(removeUserContent)">Remove</button>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">
+            <ng-container *ngIf="true">
+              <!-- TODO: ng bootstrap accordionba tenni, így összecsukható a rengeteg user? -->
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-primary mb-2"
+                  (click)="isCollapsed = !isCollapsed"
+                  [attr.aria-expanded]="!isCollapsed"
+                >
+                  Add users
+                </button>
+              </div>
+              <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+                <ul class="list-group">
+                  <ng-container *ngFor="let user of users">
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="checkbox{{ user.id }}"
+                      autocomplete="off"
+                    />
+                    <label class="form-check-label" for="checkbox{{ user.id }}">
+                      <button
+                        type="button"
+                        class="list-group-item list-group-item-action"
+                        [ngClass]="{ active: isChecked(user.id) }"
+                        (click)="toggleSelection(user.id)"
+                      >
+                        {{ user.username }}
+                      </button>
+                    </label>
+                  </ng-container>
+                </ul>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!editGroupForm.valid"
+        >
+          Save
+        </button>
+      </form>
+    </div>
+    <p class="d-inline-flex gap-1"><button
+      type="button"
+      class="btn btn-danger"
+      data-bs-toggle="modal"
+      (click)="open(content)"
+    >
+      Delete group
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      data-bs-toggle="modal"
+      (click)="open(leaveGroupContent)"
+    >
+      Leave group
+    </button></p>
+    
+  </div>
+  <div class="col"></div>
+</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Delete group {{ groupDetails.name }}?
+    </h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    If you delete the group, all the expenses in it will be deleted as well. You
+    can not redo this.
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+      Close
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="modal.close('Save click'); deleteGroup()"
+    >
+      Delete
+    </button>
+  </div>
+</ng-template>
+<ng-template #removeUserContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Remove user
+    </h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    You can not delete this user, because they have expenses in the group.
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+      Close
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="modal.close('Save click')"
+      disabled
+    >
+      Delete
+    </button>
+  </div>
+</ng-template>
+<ng-template #leaveGroupContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Leave group
+    </h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    You can not leave this group, you have to settle up before.
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group"></div>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+      Close
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="modal.close('Save click')"
+      disabled
+    >
+      Leave
+    </button>
+  </div>
+</ng-template>

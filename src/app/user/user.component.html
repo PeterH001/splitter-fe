@@ -1,0 +1,46 @@
+<div class="row mb-4">
+  <div class="col d-flex justify-content-center">
+    <span class="display-4">My profile</span>
+  </div>
+</div>
+<div class="row d-flex justify-content-center">
+  <div class="col-md-4">
+    <ul class="list-group mb-2">
+      <li class="list-group-item list-group-item-action" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+          <small class="mb-1">Username</small>
+          <p class="mb-1">{{ userData.username }}</p>
+        </div>
+      </li>
+      <li class="list-group-item list-group-item-action" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+          <small class="mb-1">First name</small>
+          <ng-container *ngIf="userData.firstName; else noFirstNameBlock">
+            <p class="mb-1">{{ userData.firstName }}</p>
+          </ng-container>
+          <ng-template #noFirstNameBlock>
+            <i class="small text-muted">no first name given</i>
+          </ng-template>
+        </div>
+      </li>
+      <li class="list-group-item list-group-item-action" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+          <small class="mb-1">Last name</small>
+          <ng-container *ngIf="userData.lastName; else noLastNameBlock">
+            <p class="mb-1">{{ userData.lastName }}</p>
+          </ng-container>
+          <ng-template #noLastNameBlock>
+            <i class="small text-muted">no last name given</i>
+          </ng-template>
+        </div>
+      </li>
+      <li class="list-group-item list-group-item-action" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+          <small class="mb-1">Email</small>
+          <p class="mb-1">{{ userData.email }}</p>
+        </div>
+      </li>
+    </ul>
+    <button type="button" class="btn btn-primary" (click)="navigate()">Edit profile</button>
+  </div>
+</div>

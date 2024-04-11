@@ -1,0 +1,28 @@
+<div class="row mb-4">
+    <div class="col">
+      <div class="d-flex justify-content-center">
+        <span class="display-4">Groups</span>
+      </div>
+    </div>
+</div>
+<div class="row d-flex justify-content-center">
+  <div class="col-md-8">
+    <ng-container *ngIf="groups.length > 0; else emptyBlock">
+      <ng-container *ngFor="let group of groups">
+        <app-card
+          [id]="group.groupId"
+          [groupName]="group.groupName"
+          [debtsByCurrencies]="group.debtsByCurrencies"
+        ></app-card>
+      </ng-container>
+    </ng-container>
+    <ng-template #emptyBlock>
+      <p class="d-flex justify-content-center text-muted">You are not in any groups yet</p>
+    </ng-template>
+  </div>
+</div>
+<div class="fixedButton">
+  <button type="button" class="btn btn-primary" (click)="createGroup()">
+    Add group
+  </button>
+</div>

@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="row mb-4">
+    <div class="col">
+      <div class="d-flex justify-content-center">
+        <span class="display-4">Expenses</span>
+      </div>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center">
+      <div class="col-md-8">
+        <ng-container *ngIf="expenses.length > 0; else emptyBlock">
+          <ng-container *ngFor="let expense of expenses">
+            <app-expense-menu-card
+            [name]="expense.name"
+            [amount]="expense.amount"
+            [currency]="expense.currency"
+            [distributionType]="expense.distributionType"
+            [groupName]="expense.group.name"
+            [id]="expense.group.id"
+            (click)="navigateToExpense(expense.id)"
+            ></app-expense-menu-card>
+          </ng-container>
+        </ng-container>
+        <ng-template #emptyBlock>
+          <p class="d-flex justify-content-center text-muted">There are no expenses</p>
+        </ng-template>
+      </div>
+  </div>
+</div>

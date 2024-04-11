@@ -1,0 +1,266 @@
+<div class="row mb-4 mt-2">
+    <div class="col-auto">
+      <button
+        type="button"
+        class="btn btn-primary rounded-circle"
+        title="Back"
+        (click)="goBack()"
+      >
+        <i class="bi bi-arrow-left" style="font-size: 1.5rem; color: white"></i>
+      </button>
+    </div>
+    <div class="col">
+      <h1 class="text-center">Edit expense</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-md-5">
+      <div class="row mb-2">
+        <form [formGroup]="editExpenseForm" (ngSubmit)="submitForm()">
+          <div class="row mb-2">
+            <div class="col">
+              <div class="form-group">
+                <label for="name">Expense name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  formControlName="name"
+                  required
+                />
+                <div
+                  *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="name?.errors?.['required']">Name is required.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <div class="form-group">
+                <label for="amount">Amount</label>
+              <input
+                type="number"
+                min="0"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                inputmode="numeric"
+                class="form-control"
+                placeholder="Spent amount"
+                id="amount"
+                name="amount"
+                formControlName="amount"
+              />
+              <div
+              *ngIf="amount?.invalid && (amount?.dirty || amount?.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="amount?.errors?.['required']">Amount is required.</div>
+            </div>
+              </div>
+            </div>
+            <div class="col">
+              <label for="currency">Currency</label>
+              <select
+                type="text"
+                class="form-control"
+                id="currency"
+                name="currency"
+                formControlName="currency"
+                required
+              >
+                <option *ngFor="let currency of currencies" [value]="currency">
+                  {{ currency }}
+                </option>
+              </select>
+              <div
+              *ngIf="currency?.invalid && (currency?.dirty || currency?.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="currency?.errors?.['required']">Currency is required.</div>
+            </div>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <div class="form-group">
+                <label for="category">Expense category</label>
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  id="category"
+                  name="category"
+                  formControlName="category"
+                >
+                  <option *ngFor="let category of categories" [value]="category">
+                    {{ category }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="category?.invalid && (category?.dirty || category?.touched)"
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="category?.errors?.['required']">Category is required.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                  name="description"
+                  title="description"
+                  id="description"
+                  class="form-control"
+                  placeholder="Give a description..."
+                  formControlName="description"
+                ></textarea>
+              </div>
+            </div>
+          </div>     
+          <div class="row mb-2">
+            <div class="col-auto">
+              <p>Paid by</p>
+            </div>
+            <div class="col">
+              <select class="form-select" title="payer" formControlName="payerId" required>
+                <option
+                  *ngFor="let groupMember of groupMembers"
+                  [value]="groupMember.id"
+                >
+                  {{ groupMember.username }}
+                </option>
+              </select>
+              <div
+              *ngIf="payerId?.invalid && (payerId?.dirty || payerId?.touched)"
+              class="alert alert-danger"
+            >
+            <div *ngIf="payerId?.errors?.['required']">You have to select, who paid</div>
+            <div *ngIf="payerId?.errors?.['minLength']">You have to select, who paid</div>
+          </div>
+            </div>
+            <div class="col-auto">
+              <p>and split</p>
+            </div>
+            <div class="col">
+              <select
+                class="form-select"
+                title="splittingMethod"
+                formControlName="distributionType"
+              >
+                <option
+                  *ngFor="let distributionType of distributionTypes"
+                  [value]="distributionType"
+                >
+                  {{ distributionType }}
+                </option>
+              </select>
+              <div
+              *ngIf="distributionType?.invalid && (distributionType?.dirty || distributionType?.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="distributionType?.errors?.['required']">Select a type of distribution</div>
+            </div>
+            </div>
+          </div>
+          <div class="row  mb-2">
+            <div class="col">
+              <ng-container *ngIf="distributionType?.value == 'equal'">
+                <ul class="list-group">
+                  <ng-container *ngFor="let groupMember of groupMembers">
+                    <input type="checkbox" class="btn-check" id="checkbox{{groupMember.id}}" autocomplete="off">
+                    <label class="form-check-label" for="checkbox{{groupMember.id}}">
+                      <button type="button" class="list-group-item list-group-item-action" [ngClass]="{'active': isChecked(groupMember.id)}" (click)="toggleSelection(groupMember.id)">{{groupMember.username}}</button>
+                    </label>
+                  </ng-container>
+                </ul>
+              </ng-container>
+              <ng-container *ngIf="distributionType?.value == 'proportional'">
+                <ng-container *ngFor="let groupMember of groupMembers">
+                  <div class="form-check form-check-reverse card mb-2">
+                    <div class="card-body d-flex justify-content-between">                
+                      {{ groupMember.username }}
+                      <div class="input-group">
+                        <input type="number" class="form-control" id="groupMember.id" aria-label="proportion" (input)="toggleProportionalSelection(groupMember.id, $any($event).target.value)" [value]="getPercent(groupMember.id)">
+                        <span class="input-group-text bg-secondary text-light" id="{{groupMember.id}}">%</span>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="distributionType?.value == 'exact_amounts'">
+                <ng-container *ngFor="let groupMember of groupMembers">
+                  <div class="form-check form-check-reverse card mb-2">
+                    <div class="card-body d-flex justify-content-between">                
+                      {{ groupMember.username }}
+                      <div class="input-group">
+                        <input type="number" class="form-control" id="groupMember.id" aria-label="proportion" (input)="toggleExactAmountlSelection(groupMember.id, $any($event).target.value)" [value]="getAmount(groupMember.id)">
+                        <span class="input-group-text bg-secondary text-light" id="{{groupMember.id}}">{{currency?.value}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+              <div
+              *ngIf="userIds?.invalid || (distributionType?.value =='proportional' && proportionalDebtsData?.invalid) || (distributionType?.value =='exact_amounts' && exactAmountsDebtData?.invalid)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="userIds?.errors?.['required']">You have to choose at least one person</div>
+              <div *ngIf="userIds?.errors?.['minLength']">You have to choose at least one person</div>
+              <div *ngIf="proportionalDebtsData?.errors?.['tooMuch']">You can't to distribute more than 100%</div>
+              <div *ngIf="proportionalDebtsData?.errors?.['tooShort'] && distributionType?.value=='proportional'">You have to distribute 100%</div>
+              <div *ngIf="exactAmountsDebtData?.errors?.['tooMuch'] && distributionType?.value=='exact_amounts'">You can't distribute more than the expense amount.</div>
+              <div *ngIf="exactAmountsDebtData?.errors?.['tooShort'] && distributionType?.value=='exact_amounts'">You have to distribute all money.</div>
+            </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="editExpenseForm.invalid">
+            Save
+          </button>
+        </form>
+      </div>
+      <button
+      type="button"
+      class="btn btn-danger"
+      data-bs-toggle="modal"
+      (click)="open(content)"
+    >
+      Delete expense
+    </button>
+    </div>
+    <div class="col"></div>
+  </div>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Delete group {{ expenseDetails.expenseName }}?
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      If you delete the expense, all the debts in it will be deleted as well. You
+      can not redo this.
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="modal.close('Save click'); deleteExpense()"
+      >
+        Delete
+      </button>
+    </div>
+  </ng-template>

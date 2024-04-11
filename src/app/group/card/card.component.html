@@ -1,0 +1,26 @@
+<div class="card mb-3" (click)="navigateToGroupDetails(id)">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <i class="bi bi-cart4" style="font-size: 1.5rem;"></i>
+      </div>
+      <div class="col">
+        <h5>{{ groupName }}</h5>
+      </div>
+      <div class="col-auto">
+        <div *ngIf="debtsByCurrencies.length > 0; else settled_up">
+          <p class="card-text text-muted">
+            You owe
+            <ng-container
+              *ngFor="let debt of debtsByCurrencies; let last = last">
+              {{ debt.amount }} {{ debt.currency }}
+              <ng-container *ngIf="!last">, </ng-container></ng-container>
+          </p>
+        </div>
+        <ng-template #settled_up>
+          <p class="card-text text-muted">You are settled up</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

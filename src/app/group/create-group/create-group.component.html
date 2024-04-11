@@ -1,0 +1,89 @@
+<div class="row mb-4 mt-4">
+  <div class="col-auto">
+    <button
+      type="button"
+      class="btn btn-primary rounded-circle"
+      title="Back"
+      (click)="goBack()"
+    >
+      <i class="bi bi-arrow-left" style="font-size: 1.5rem; color: white"></i>
+    </button>
+  </div>
+  <div class="col text-center">
+    <span class="display-4">Create new group</span>
+  </div>
+</div>
+<div class="row">
+  <div class="col"></div>
+  <div class="col-md-5">
+    <form [formGroup]="createGroupForm" (ngSubmit)="submitForm()">
+      <div class="row mb-2">
+        <div class="col">
+          <div class="form-group">
+            <label for="groupName">Group name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="groupName"
+              name="groupName"
+              formControlName="groupName"
+              required
+            />
+            <div
+              *ngIf="
+                groupName?.invalid && (groupName?.dirty || groupName?.touched)
+              "
+              class="alert alert-danger"
+            >
+              <div *ngIf="groupName?.errors?.['required']">
+                Name is required.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col">
+          <ng-container *ngIf="true">
+            <!-- TODO: ng bootstrap accordionba tenni, így összecsukható a rengeteg user? -->
+            <div>
+              <button
+                type="button"
+                class="btn btn-primary mb-2"
+                (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed"
+              >
+                Add users
+              </button>
+            </div>
+            <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+              <ul class="list-group">
+                <ng-container *ngFor="let user of users">
+                  <input type="checkbox" class="btn-check" id="checkbox{{user.id}}" autocomplete="off">
+                  <label class="form-check-label" for="checkbox{{user.id}}">
+                    <button type="button" class="list-group-item list-group-item-action" [ngClass]="{'active': isChecked(user.id)}" (click)="toggleSelection(user.id)">{{user.username}}</button>
+                  </label>
+                </ng-container>
+              </ul>
+            </div>
+            
+          </ng-container>
+          <div>
+            <span class="text-muted"
+              >If you don't select any members now, you will be the only member
+              of the group. You can add members later.</span
+            >
+          </div>
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!createGroupForm.valid"
+      >
+        Create
+      </button>
+    </form>
+  </div>
+  <div class="col"></div>
+</div>

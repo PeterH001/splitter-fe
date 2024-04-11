@@ -1,0 +1,81 @@
+<div class="modal-header">
+  <h4 class="modal-title">Settle up</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="row mb-2">
+    <div class="col d-flex justify-content-center">
+      {{ payerUsername }}<span class="mx-2"></span
+      ><i class="bi bi-arrow-right"></i><span class="mx-2"></span
+      >{{ recieverUsername }}
+    </div>
+  </div>
+  <div class="row">
+    <form id="settleUpForm" [formGroup]="settleUpForm" (ngSubmit)="submitForm()">
+      <div class="row mb-2">
+        <div class="col">
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input
+              type="number"
+              min="0"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+              inputmode="numeric"
+              class="form-control"
+              placeholder="Spent amount"
+              id="amount"
+              name="amount"
+              formControlName="amount"
+            />
+            <div
+              *ngIf="amount?.invalid && (amount?.dirty || amount?.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="amount?.errors?.['required']">
+                Amount is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <label for="currency">Currency</label>
+          <select
+            type="text"
+            class="form-control"
+            id="currency"
+            name="currency"
+            formControlName="currency"
+            required
+          >
+            <option *ngFor="let currency of currencies" [value]="currency">
+              {{ currency }}
+            </option>
+          </select>
+          <div
+            *ngIf="currency?.invalid && (currency?.dirty || currency?.touched)"
+            class="alert alert-danger"
+          >
+            <div *ngIf="currency?.errors?.['required']">
+              Currency is required.
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.close()"
+  >
+    Close
+  </button>
+  <button type="submit" form="settleUpForm" class="btn btn-success">Settle up</button>
+</div>

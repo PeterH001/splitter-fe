@@ -1,0 +1,62 @@
+<div class="row mb-4 mt-2">
+  <div class="col-auto">
+    <button
+      type="button"
+      class="btn btn-primary rounded-circle"
+      title="Back"
+      (click)="goBack()"
+    >
+      <i class="bi bi-arrow-left" style="font-size: 1.5rem; color: white"></i>
+    </button>
+  </div>
+  <div class="col">
+    <div class="row">
+      <div class="text-center text-muted">Expense details</div>
+    </div>
+    <div class="row">
+      <div class="text-center">
+        <h2>
+          {{ expenseDetails.expenseName }}
+        </h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-primary" (click)="navigateToEdit()">Edit expense</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="row">
+        <div class="card mb-4">
+            <div class="container"></div>
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                    <i class="bi bi-basket2-fill" style="font-size: 1.5rem;"></i>
+                </div>
+                <div class="col text-center">
+                    {{expenseDetails.payerName}} paid {{expenseDetails.amount}} {{expenseDetails.currency}} and split {{expenseDetails.distribution}}
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div class="row" *ngFor="let debt of debts">
+      <app-debt-card
+      [amount]="debt.amount"
+      [currency]="debt.currency"
+      [name]="debt.name"
+      [debt]="debt"
+      ></app-debt-card>
+    </div>
+  </div>
+  <div class="col">
+    <div *ngIf="expenseDetails.description">
+        <div class="border border-primary rounded text-center">
+            {{expenseDetails.description}}
+        </div>
+        
+    </div>
+  </div>
+</div>

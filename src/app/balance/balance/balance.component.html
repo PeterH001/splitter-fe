@@ -1,0 +1,45 @@
+<div class="row mb-4 mt-2">
+  <div class="col-auto">
+    <button
+      type="button"
+      class="btn btn-primary rounded-circle"
+      title="Back"
+      (click)="goBack()"
+    >
+      <i class="bi bi-arrow-left" style="font-size: 1.5rem; color: white"></i>
+    </button>
+  </div>
+  <div class="col">
+    <h1 class="text-center">Wich balance do you want to settle?</h1>
+  </div>
+</div>
+<div class="row d-flex justify-content-center">
+  <div class="col-md-8">
+    <ng-container *ngFor="let balance of balances">
+      <ng-container *ngFor="let youOweByCurrency of balance.youOwe">
+        you owe
+        <app-balance-card
+          [payerId]="balance.you.id"
+          [payerUsername]="balance.you.username"
+          [recieverId]="balance.other.id"
+          [recieverUsername]="balance.other.username"
+          [amount]="youOweByCurrency.amount"
+          [currency]="youOweByCurrency.currency"
+          (click)="openModal(balance.you.id, balance.you.username, balance.other.id, balance.other.username, youOweByCurrency.amount, youOweByCurrency.currency, balance.id)"
+        ></app-balance-card>
+      </ng-container>
+      <ng-container *ngFor="let youAreOwedByCurrency of balance.youAreOwed">
+        you are owed
+        <app-balance-card
+          [payerId]="balance.other.id"
+          [payerUsername]="balance.other.username"
+          [recieverId]="balance.you.id"
+          [recieverUsername]="balance.you.username"
+          [amount]="youAreOwedByCurrency.amount"
+          [currency]="youAreOwedByCurrency.currency"
+          (click)="openModal(balance.other.id, balance.other.username, balance.you.id, balance.you.username, youAreOwedByCurrency.amount, youAreOwedByCurrency.currency, balance.id)"
+        ></app-balance-card>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

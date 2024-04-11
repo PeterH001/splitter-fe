@@ -1,0 +1,1 @@
+{"ast":null,"code":"export * from './user-roles.model';","map":{"version":3,"names":[],"sources":["C:\\Users\\Peti\\nest_projects\\splitwise\\frontend\\splitter-fe\\src\\app\\constants\\index.ts"],"sourcesContent":["export * from './user-roles.model';\r\n"],"mappings":"AAAA,cAAc,oBAAoB"},"metadata":{},"sourceType":"module","externalDependencies":[]}

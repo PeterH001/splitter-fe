@@ -1,0 +1,29 @@
+<div class="row mb-4">
+  <div class="col">
+    <div class="d-flex justify-content-center">
+      <span class="display-4">Debts</span>
+    </div>
+  </div>
+</div>
+<div class="row d-flex justify-content-center">
+  <div class="col-md-8">
+    <ng-container *ngIf="debts.length > 0; else emptyBlock">
+      <ng-container *ngFor="let debt of debts">
+        <app-debts-menu-card
+          [userId]="debt.userId"
+          [amount]="debt.amount"
+          [currency]="debt.currency"
+          [payerId]="debt.payerId"
+          [payerName]="debt.payerName"
+          [groupId]="debt.groupId"
+          [groupName]="debt.groupName"
+          [expenseId]="debt.expenseId"
+          [expenseName]="debt.expenseName"
+        ></app-debts-menu-card>
+      </ng-container>
+    </ng-container>
+    <ng-template #emptyBlock>
+      <p class="d-flex justify-content-center text-muted">There are no debts</p>
+    </ng-template>
+  </div>
+</div>
