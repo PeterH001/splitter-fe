@@ -13,7 +13,7 @@ import { ExpenseService } from 'src/app/services/expense.service';
   styleUrls: ['./balance.component.css'],
 })
 export class BalanceComponent implements OnInit {
-  balances!: BalanceDTO[];
+  balanceInformation!: BalanceDTO;
   currencies!: string[]
   groupId!: number;
 
@@ -30,7 +30,7 @@ export class BalanceComponent implements OnInit {
       .getMyBalancesByGroupId(this.groupId)
       .subscribe((response) => {
         console.log('balances: ', response);
-        this.balances = response;
+        this.balanceInformation = response;
       });
 
       this.expenseService.getCurrencies().subscribe(response=>this.currencies = response)

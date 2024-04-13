@@ -18,12 +18,15 @@ export class AuthService {
   register(registerData: any){
     return this.http.post(this.baseUrl + '/signup', registerData);
   }
+  registerAdmin(registerData: any){
+    return this.http.post(this.baseUrl + '/admin/signup', registerData);
+  }
 
   public setRoles(roles: []) {
     localStorage.setItem('roles', JSON.stringify(roles));
   }
 
-  public getRoles(): [] {
+  public getRoles(): string[] {
     const rolesString = localStorage.getItem('roles');
     if (rolesString) {
         return JSON.parse(rolesString);
@@ -45,7 +48,7 @@ export class AuthService {
   }
 
   public isLoggedIn() {
-    if( this.getRoles() && this.getToken()){      
+    if(this.getRoles() && this.getToken()){      
       return true;
     }else{
       return false;

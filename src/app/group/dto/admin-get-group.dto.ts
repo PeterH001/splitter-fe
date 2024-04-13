@@ -1,4 +1,4 @@
 export interface AdminGetGroupDTO{
     id: number;
-    name: string;
+    groupName: string;
 }

@@ -60,15 +60,19 @@ export class CreateExpenseComponent implements OnInit {
     
     this.expenseService.getExpenseCategories().subscribe((result) => {
       this.categories = result;
+      this.createExpenseForm.get('category')?.setValue(this.categories[0] ?? '');
     });
     this.groupService.getGroupMembersById(this.groupId).subscribe((result) => {
       this.groupMembers = result;
     });
     this.expenseService.getCurrencies().subscribe((result) => {
       this.currencies = result;
+      this.createExpenseForm.get('currency')?.setValue(this.currencies[0] ?? '');
+
     });
     this.expenseService.getExpenseDistributions().subscribe((result) => {
       this.distributionTypes = result;
+      this.createExpenseForm.get('distributionType')?.setValue(this.distributionTypes[0] ?? '');
     });
   }
 

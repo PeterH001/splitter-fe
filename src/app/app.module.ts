@@ -10,7 +10,7 @@ import { HeaderComponent } from './header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthInterceptorProvider } from './auth/auth.interceptor';
+import { AuthInterceptorProvider } from './auth/interceptors/auth.interceptor';
 import { GroupModule } from './group/group.module';
 import { ExpenseModule } from './expense/expense.module';
 import { DebtModule } from './debt/debt.module';

@@ -17,12 +17,26 @@
       <button class="btn btn-primary" (click)="navigateToEdit()">Edit group</button>
     </div>
   </div>
-  <div class="row mb-4">
-    <ng-container *ngIf="expenses.length > 0">
-      <div class="container d-flex justify-content-evenly">
-        <div class="col-auto">Balance:</div>
+  <ng-container *ngIf="expenses.length > 0">
+    <div class="d-flex justify-content-between">
+      <div class="row">
         <div class="col-auto">
-          <div *ngFor="let balance of balances">
+          In total:
+        </div>
+        <div class="col-auto">
+          <ng-container *ngFor="let balanceByCurrency of balanceInformation.yourBalanceInGroup">
+            <ng-container *ngIf="balanceByCurrency.amount > 0">
+             <p class="text-success">You get back {{balanceByCurrency.amount}} {{balanceByCurrency.currency}}</p>
+            </ng-container>
+            <ng-container *ngIf="balanceByCurrency.amount < 0">
+              <p class="text-danger">You owe {{-balanceByCurrency.amount}} {{balanceByCurrency.currency}}</p></ng-container>
+          </ng-container>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-auto">Balances:</div>
+        <div class="col-auto">
+          <div *ngFor="let balance of balanceInformation.balances">
             <ng-container *ngIf="balance.youAreOwed.length > 0">
               {{ balance.other.username }} owes you
               <ng-container *ngFor="let debt of balance.youAreOwed; let last = last">
@@ -41,8 +55,8 @@
           </div>
         </div>
       </div>
-    </ng-container>
-  </div>
+    </div>
+  </ng-container>
   <div class="row">
     <div class="col-md">
       <div class="row">
@@ -98,7 +112,7 @@
         </ng-container>
       </ng-container>
       <ng-container *ngIf="details.expenses.length > 0; else emptyBlock">
-        <div class="row" *ngFor="let expense of details.expenses">
+        <div class="row" *ngFor="let expense of details.expenses.reverse()">
           <app-expense-card
             [id]="expense.id"
             [payerName]="expense.payerName"

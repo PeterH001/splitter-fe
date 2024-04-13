@@ -8,11 +8,11 @@
 <div class="row d-flex justify-content-center">
   <div class="col-md-8">
     <ng-container *ngIf="groups.length > 0; else emptyBlock">
-      <ng-container *ngFor="let group of groups">
+      <ng-container *ngFor="let group of groups, let i= index">
         <app-card
           [id]="group.groupId"
           [groupName]="group.groupName"
-          [debtsByCurrencies]="group.debtsByCurrencies"
+          [debtsByCurrencies]="groupBalances[i]"
         ></app-card>
       </ng-container>
     </ng-container>

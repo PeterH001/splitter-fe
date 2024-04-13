@@ -1,0 +1,83 @@
+<div class="row mb-4">
+    <div class="col">
+      <div class="d-flex justify-content-center">
+        <span class="display-4">Admin registration</span>
+      </div>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-4">
+      <form [formGroup]="registerForm" (ngSubmit)="submitForm()">
+        <div class="form-group mb-2">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            formControlName="username"
+            required
+          />
+          <div
+            *ngIf="username?.invalid && (username?.dirty || username?.touched)"
+            class="alert alert-danger"
+          >
+            <div *ngIf="username?.errors?.['required']">Name is required.</div>
+            <div *ngIf="username?.errors?.['usernameTaken']">Username is already taken.</div>
+          </div>
+        </div>
+        <div class="form-group mb-2">
+          <label for="email">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            formControlName="email"
+            required
+          />
+          <div
+            *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+            class="alert alert-danger"
+          >
+            <div *ngIf="email?.errors?.['required']">Email is required.</div>
+            <div *ngIf="email?.errors?.['email']">Give a valid email adress.</div>
+            <div *ngIf="email?.errors?.['emailTaken']">Email is already taken.</div>
+          </div>
+        </div>
+        <div class="form-group mb-2">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            autocomplete="new-password"
+            class="form-control"
+            id="password"
+            name="password"
+            formControlName="password"
+            required
+          />
+          <div
+            *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+            class="alert alert-danger"
+          >
+            <div *ngIf="password?.errors?.['required']">
+              Password is required.
+            </div>
+            <div *ngIf="password?.errors?.['minLength']">Password must contain at least 8 characters.</div>
+            <div *ngIf="password?.hasError('required')">Password is required</div>
+            <div *ngIf="password?.hasError('capital')">
+              Password must contain at least one capital letter
+            </div>
+            <div *ngIf="password?.hasError('number')">
+              Password must contain at least one number
+            </div>
+            <div *ngIf="password?.hasError('specialChar')">
+              Password must contain at least one special character
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Register as admin</button>
+      </form>
+    </div>
+  </div>
+  

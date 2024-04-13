@@ -15,7 +15,7 @@ export class GroupDetailsComponent implements OnInit {
   details!: GroupDetailsDTO;
 
   //TODO: ne any legyen
-  balances: any;
+  balanceInformation: any;
 
   //TODO: ne any legyen
   payments: any;
@@ -66,7 +66,7 @@ export class GroupDetailsComponent implements OnInit {
 
     this.balanceService
       .getMyBalancesByGroupId(this.id)
-      .subscribe((response) => (this.balances = response));
+      .subscribe((response) => (this.balanceInformation = response));
 
     this.paymentService.findByGroupId(this.id).subscribe((response) => {
       this.payments = response;

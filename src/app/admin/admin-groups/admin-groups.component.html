@@ -15,13 +15,13 @@
             <div class="row">
                 <app-admin-group-card
                 [id]="group.id"
-                [groupName]="group.name"
+                [groupName]="group.groupName"
                 ></app-admin-group-card>
             </div>
         </ng-container>
       </ng-container>
       <ng-template #emptyBlock>
-        <p class="d-flex justify-content-center text-muted">You are not in any groups yet</p>
+        <p class="d-flex justify-content-center text-muted">There are no groups</p>
       </ng-template>
     </div>
   </div>

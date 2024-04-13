@@ -1,19 +1,15 @@
 import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { minLengthValidator, passwordValidator } from '../auth/validators';
+import { minLengthValidator, passwordValidator } from 'src/app/auth/validators';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  selector: 'app-admin-register',
+  templateUrl: './admin-register.component.html',
+  styleUrls: ['./admin-register.component.css']
 })
-export class RegisterComponent {
+export class AdminRegisterComponent {
   registerForm = new FormGroup({
     username: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -30,11 +26,11 @@ export class RegisterComponent {
     console.log('form value: ', this.registerForm.value);
     console.log(this.password?.errors);
     if(this.registerForm.valid){
-      this.authService.register(this.registerForm.value).subscribe(
+      this.authService.registerAdmin(this.registerForm.value).subscribe(
         (response: any)=>{
           this.authService.setToken(response.token);
           this.authService.setRoles(response.role);
-          this.router.navigate(['/user']);
+          this.router.navigate(['/admin']);
         },
         (error)=>{
           if(error.status === 400){

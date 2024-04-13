@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GroupService } from '../../services/group.service';
 import { Router } from '@angular/router';
 import { GetMyGroupsDTO } from '../dto';
+import { BalanceService } from 'src/app/services/balance.service';
 
 @Component({
   selector: 'app-groups',
@@ -10,11 +11,23 @@ import { GetMyGroupsDTO } from '../dto';
 })
 export class GroupsComponent implements OnInit {
   groups: GetMyGroupsDTO[] = [];
-  constructor(private groupService: GroupService, private router: Router) {}
-  ngOnInit(): void {
+  groupBalances: { amount: number; currency: string }[][] = [];
+
+  constructor(
+    private groupService: GroupService,
+    private balanceService: BalanceService,
+    private router: Router
+  ) {}
+  ngOnInit() {
     this.groupService.getMyGroups().subscribe((response) => {
       this.groups = response;
-      console.log('groups: ', this.groups);
+
+      const groupIds: number[] = this.groups.map((group) => group.groupId);
+      this.balanceService.yourGroupBalances(groupIds).subscribe((response) => {
+        this.groupBalances = response;
+        console.log(this.groupBalances);
+        
+      });
     });
   }
   createGroup() {
