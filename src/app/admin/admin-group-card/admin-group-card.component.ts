@@ -18,7 +18,7 @@ export class AdminGroupCardComponent {
     private modalService: NgbModal
   ) {}
   editGroup() {
-    this.router.navigate(['/expense', this.id, 'edit']);
+    this.router.navigate(['/group', this.id, 'edit']);
   }
 
   open(content: TemplateRef<any>) {
@@ -27,6 +27,6 @@ export class AdminGroupCardComponent {
   }
 
   deleteGroup() {
-    // this.groupService.deleteGroupById(this.id).subscribe();
+    this.groupService.deleteGroupById(this.id).subscribe();
   }
 }

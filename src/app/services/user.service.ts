@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
-import { UserDTO } from '../user/dto';
+import { AdminGetUsersDTO, UserDTO } from '../user/dto';
 
 const BASEURL = 'http://localhost:3000/users';
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  patchUser(userData: Partial<{ username: string | null; email: string | null; firstName: string | null; lastName: string | null; }>) {
-    return this.http.patch(BASEURL + '/me', userData);
-  }
   constructor(private authservice: AuthService, private http: HttpClient) {}
 
   public roleMatch(allowedRoles: string[]): boolean {
@@ -27,10 +24,21 @@ export class UserService {
   }
 
   public getUsers() {
-    return this.http.get<{ id: number; username: string }[]>(BASEURL);
+    return this.http.get<AdminGetUsersDTO[]>(BASEURL);
   }
 
   public getMe() {
     return this.http.get<UserDTO>(BASEURL + '/me');
+  }
+
+  public getUserById(id: number) {
+    return this.http.get<UserDTO>(BASEURL + `/${id}`);
+  }
+
+  patchMe(userData: Partial<{ username: string | null; email: string | null; firstName: string | null; lastName: string | null; }>) {
+    return this.http.patch(BASEURL + '/me', userData);
+  }
+  patchUser(id: number, userData: Partial<{ username: string | null; email: string | null; firstName: string | null; lastName: string | null; }>) {
+    return this.http.patch(BASEURL + `/${id}`, userData);
   }
 }

@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from './user.component';
 import { FindUserTypeaheadComponent } from './find-user-typeahead/find-user-typeahead.component';
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { EditMyProfileComponent } from './edit-my-profile/edit-profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 
 
@@ -11,7 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     UserComponent,
     FindUserTypeaheadComponent,
-    EditProfileComponent
+    EditMyProfileComponent,
+    EditUserComponent
   ],
   imports: [
     CommonModule,

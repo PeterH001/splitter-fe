@@ -1,6 +1,6 @@
 <ng-container *ngIf="loaded">
   <div class="row mb-4 mt-2">
-    <div class="col-auto">
+    <div class="col-auto ms-2">
       <button
         type="button"
         class="btn btn-primary rounded-circle"
@@ -11,15 +11,20 @@
       </button>
     </div>
     <div class="col">
-      <h1 class="text-center">{{ details.name }}</h1>
+      <div class="row">
+        <p class="text-center text-muted">Group</p>
+      </div>
+      <div class="row">
+        <p class="display-5 text-center">{{details.name}}</p>
+      </div>
     </div>
-    <div class="col-auto">
+    <div class="col-auto me-2">
       <button class="btn btn-primary" (click)="navigateToEdit()">Edit group</button>
     </div>
   </div>
   <ng-container *ngIf="expenses.length > 0">
-    <div class="d-flex justify-content-between">
-      <div class="row">
+    <div class="d-flex justify-content-center">
+      <div class="row justify-content-between">
         <div class="col-auto">
           In total:
         </div>
@@ -33,7 +38,7 @@
           </ng-container>
         </div>
       </div>
-      <div class="row">
+      <div class="row justify-content-between">
         <div class="col-auto">Balances:</div>
         <div class="col-auto">
           <div *ngFor="let balance of balanceInformation.balances">
@@ -57,78 +62,81 @@
       </div>
     </div>
   </ng-container>
-  <div class="row">
-    <div class="col-md">
-      <div class="row">
-        <div class="card">
-          <div class="card-body">
-            <div class="card-title text-center">
-              <h5>Members:</h5>
-            </div>
-            <div class="card-text">
-              <div *ngFor="let member of members">
-                <div class="row mb-2">
-                  <div class="col-md text-center">
-                    <div
-                      *ngIf="
-                        member.firstName && member.lastName;
-                        else usernameBlock
-                      "
-                    >
-                      {{ member.firstName }} {{ member.lastName }}
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md">
+        <div class="row">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title text-center">
+                <h5>Members:</h5>
+              </div>
+              <div class="card-text">
+                <div *ngFor="let member of members">
+                  <div class="row mb-2">
+                    <div class="col-md text-center">
+                      <div
+                        *ngIf="
+                          member.firstName && member.lastName;
+                          else usernameBlock
+                        "
+                      >
+                        {{ member.firstName }} {{ member.lastName }}
+                      </div>
                     </div>
+                    <ng-template #usernameBlock>
+                      {{ member.username }}
+                    </ng-template>
                   </div>
-                  <ng-template #usernameBlock>
-                    {{ member.username }}
-                  </ng-template>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-8">
-      <ng-container *ngFor="let payment of payments">
-        <ng-container *ngFor="let paymentA of payment.userAPaid">
-          <app-payment-card
-          [payerId]="payment.userAId"
-          [payerUsername]="payment.userAname"
-          [recieverId]="payment.userBId"
-          [recieverUsername]="payment.userBname"
-          [amount]="paymentA.amount"
-          [currency]="paymentA.currency"
-          ></app-payment-card>
+      <div class="col-md-8">
+        <ng-container *ngFor="let payment of payments">
+          <ng-container *ngFor="let paymentA of payment.userAPaid">
+            <app-payment-card
+            [payerId]="payment.userAId"
+            [payerUsername]="payment.userAname"
+            [recieverId]="payment.userBId"
+            [recieverUsername]="payment.userBname"
+            [amount]="paymentA.amount"
+            [currency]="paymentA.currency"
+            ></app-payment-card>
+          </ng-container>
+          <ng-container *ngFor="let paymentB of payment.userBPaid">
+            <app-payment-card
+            [payerId]="payment.userBId"
+            [payerUsername]="payment.userBname"
+            [recieverId]="payment.userAId"
+            [recieverUsername]="payment.userAname"
+            [amount]="paymentB.amount"
+            [currency]="paymentB.currency"
+            ></app-payment-card>
+          </ng-container>
         </ng-container>
-        <ng-container *ngFor="let paymentB of payment.userBPaid">
-          <app-payment-card
-          [payerId]="payment.userBId"
-          [payerUsername]="payment.userBname"
-          [recieverId]="payment.userAId"
-          [recieverUsername]="payment.userAname"
-          [amount]="paymentB.amount"
-          [currency]="paymentB.currency"
-          ></app-payment-card>
+        <ng-container *ngIf="details.expenses.length > 0; else emptyBlock">
+          <div class="row" *ngFor="let expense of details.expenses.reverse()">
+            <app-expense-card
+              [id]="expense.id"
+              [payerName]="expense.payerName"
+              [currency]="expense.currency"
+              [distributionTypeKey]="expense.distribution"
+              [expenseAmount]="expense.amount"
+              [expenseName]="expense.name"
+              [youOwe]="expense.debtAmount"
+            ></app-expense-card>
+          </div>
         </ng-container>
-      </ng-container>
-      <ng-container *ngIf="details.expenses.length > 0; else emptyBlock">
-        <div class="row" *ngFor="let expense of details.expenses.reverse()">
-          <app-expense-card
-            [id]="expense.id"
-            [payerName]="expense.payerName"
-            [currency]="expense.currency"
-            [distributionTypeKey]="expense.distribution"
-            [expenseAmount]="expense.amount"
-            [expenseName]="expense.name"
-            [youOwe]="expense.debtAmount"
-          ></app-expense-card>
-        </div>
-      </ng-container>
-      <ng-template #emptyBlock>
-        <p class="d-flex justify-content-center text-muted">There are no expenses</p>
-      </ng-template>
-    </div>
-    <div class="col-md">
+        <ng-template #emptyBlock>
+          <p class="d-flex justify-content-center text-muted">There are no expenses</p>
+        </ng-template>
+      </div>
+      <div class="col-md">
+      </div>
     </div>
   </div>
   <div class="fixedButton">

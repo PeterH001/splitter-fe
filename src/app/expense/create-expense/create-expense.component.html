@@ -20,7 +20,7 @@
       <div class="row mb-2">
         <div class="col">
           <div class="form-group">
-            <label for="name">Expense name</label>
+            <label for="name" class="required">Expense name</label>
             <input
               type="text"
               class="form-control"
@@ -41,7 +41,7 @@
       <div class="row mb-2">
         <div class="col">
           <div class="form-group">
-            <label for="amount">Amount</label>
+            <label for="amount" class="required">Amount</label>
           <input
             type="number"
             min="0"
@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="col">
-          <label for="currency">Currency</label>
+          <label for="currency" class="required">Currency</label>
           <select
             type="text"
             class="form-control"
@@ -86,7 +86,7 @@
       <div class="row mb-2">
         <div class="col">
           <div class="form-group">
-            <label for="category">Expense category</label>
+            <label for="category" class="required">Expense category</label>
             <select
               class="form-select"
               aria-label="Default select example"
@@ -124,7 +124,7 @@
       </div>     
       <div class="row mb-2">
         <div class="col-auto">
-          <p>Paid by</p>
+          <p class="required">Paid by</p>
         </div>
         <div class="col">
           <select class="form-select" title="payer" formControlName="payerId" required>
@@ -144,13 +144,14 @@
       </div>
         </div>
         <div class="col-auto">
-          <p>and split</p>
+          <p class="required">and split</p>
         </div>
         <div class="col">
           <select
             class="form-select"
             title="splittingMethod"
             formControlName="distributionType"
+            (click)="distributionTypeChanged()"
           >
             <option
               *ngFor="let distributionType of distributionTypes"
@@ -174,7 +175,7 @@
               <ng-container *ngFor="let groupMember of groupMembers">
                 <input type="checkbox" class="btn-check" id="checkbox{{groupMember.id}}" autocomplete="off">
                 <label class="form-check-label" for="checkbox{{groupMember.id}}">
-                  <button type="button" class="list-group-item list-group-item-action" [ngClass]="{'active': isChecked(groupMember.id)}" (click)="toggleSelection(groupMember.id)">{{groupMember.username}}</button>
+                  <button type="button" class="list-group-item list-group-item-action" [ngClass]="{'active': isChecked(groupMember.id)}" (click)="toggleSelection(groupMember.id)">{{groupMember.username}} <i *ngIf="isChecked(groupMember.id)" class="bi bi-check-lg"></i></button>
                 </label>
               </ng-container>
             </ul>
@@ -196,10 +197,14 @@
             <ng-container *ngFor="let groupMember of groupMembers">
               <div class="form-check form-check-reverse card mb-2">
                 <div class="card-body d-flex justify-content-between">                
-                  {{ groupMember.username }}
-                  <div class="input-group">
-                    <input type="number" class="form-control" id="groupMember.id" aria-label="proportion" (input)="toggleExactAmountlSelection(groupMember.id, $any($event).target.value)">
-                    <span class="input-group-text" id="{{groupMember.id}}">{{currency?.value}}</span>
+                  <div class="col-auto">
+                    {{ groupMember.username }}
+                  </div>
+                  <div class="col-auto">
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="groupMember.id" aria-label="proportion" (input)="toggleExactAmountlSelection(groupMember.id, $any($event).target.value)">
+                      <span class="input-group-text" id="{{groupMember.id}}">{{currency?.value}}</span>
+                    </div>
                   </div>
                 </div>
               </div>

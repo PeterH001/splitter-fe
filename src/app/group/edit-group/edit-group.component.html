@@ -1,5 +1,6 @@
-<div class="row mb-4 mt-2">
-  <div class="col-auto">
+
+<div class="row mb-4 mt-2 align-items-center">
+  <div class="col-auto ms-2">
     <button
       type="button"
       class="btn btn-primary rounded-circle"
@@ -9,10 +10,12 @@
       <i class="bi bi-arrow-left" style="font-size: 1.5rem; color: white"></i>
     </button>
   </div>
-  <div class="col">
-    <h1 class="text-center">Edit group</h1>
+  <div class="col text-center display-4">
+    Edit group
   </div>
+  <div class="col-auto me-2"></div>
 </div>
+
 <div class="row">
   <div class="col"></div>
   <div class="col-md-5">
@@ -21,7 +24,7 @@
         <div class="row mb-2">
           <div class="col">
             <div class="form-group">
-              <label for="groupName">Group name</label>
+              <label for="groupName" class="required">Group name</label>
               <input
                 type="text"
                 class="form-control"
@@ -58,7 +61,6 @@
         <div class="row mb-2">
           <div class="col">
             <ng-container *ngIf="true">
-              <!-- TODO: ng bootstrap accordionba tenni, így összecsukható a rengeteg user? -->
               <div>
                 <button
                   type="button"
@@ -85,7 +87,7 @@
                         [ngClass]="{ active: isChecked(user.id) }"
                         (click)="toggleSelection(user.id)"
                       >
-                        {{ user.username }}
+                        {{ user.username }} <i *ngIf="isChecked(user.id)" class="bi bi-check-lg"></i>
                       </button>
                     </label>
                   </ng-container>
@@ -119,7 +121,7 @@
     >
       Leave group
     </button></p>
-    
+
   </div>
   <div class="col"></div>
 </div>

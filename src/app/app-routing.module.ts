@@ -14,7 +14,7 @@ import { GroupDetailsComponent } from './group/group-details/group-details.compo
 import { CreateGroupComponent } from './group/create-group/create-group.component';
 import { CreateExpenseComponent } from './expense/create-expense/create-expense.component';
 import { DebtsComponent } from './debt/debts/debts.component';
-import { EditProfileComponent } from './user/edit-profile/edit-profile.component';
+import { EditMyProfileComponent } from './user/edit-my-profile/edit-profile.component';
 import { EditGroupComponent } from './group/edit-group/edit-group.component';
 import { EditExpenseComponent } from './expense/edit-expense/edit-expense.component';
 import { AdminGroupsComponent } from './admin/admin-groups/admin-groups.component';
@@ -25,6 +25,7 @@ import { SettleUpComponent } from './balance/settle-up/settle-up.component';
 import { AdminRegisterComponent } from './admin/admin-register/admin-register.component';
 import { loggedInGuard } from './guards/logged-in.guard';
 import { adminGuard } from './guards/admin.guard';
+import { EditUserComponent } from './user/edit-user/edit-user.component';
 
 const routes: Routes = [
   { path: 'debts', component: DebtsComponent, canActivate: [loggedInGuard]  }, 
@@ -44,7 +45,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent }, 
   { path: 'register', component: RegisterComponent }, 
   { path: 'user', component: UserComponent, canActivate: [loggedInGuard] }, 
-  { path: 'edituser', component: EditProfileComponent, canActivate: [loggedInGuard] }, 
+  { path: 'edituser', component: EditMyProfileComponent, canActivate: [loggedInGuard] }, 
+  { path: 'edituser/:id', component: EditUserComponent, canActivate: [loggedInGuard, adminGuard] }, 
   { path: 'admin', component: AdminComponent, canActivate: [loggedInGuard, adminGuard] }, 
   { path: 'admin/register', component: AdminRegisterComponent }, 
   { path: 'admin/groups', component: AdminGroupsComponent, canActivate: [loggedInGuard, adminGuard] },

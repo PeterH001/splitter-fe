@@ -163,7 +163,8 @@ export class EditExpenseComponent implements OnInit {
       ?.setValue(this.proportionalMembers);
   }
 
-  toggleExactAmountlSelection(userId: number, amount: number) {
+  toggleExactAmountlSelection(userId: number, amountString: string) {
+    const amount = parseInt(amountString);
     const index = this.exactAmountsMembers.findIndex(
       (memberObj) => memberObj.userId === userId
     );
@@ -188,10 +189,7 @@ export class EditExpenseComponent implements OnInit {
       ?.setValue(this.exactAmountsMembers);
 
     console.log('userIds', this.editExpenseForm.get('userIds')?.value);
-    console.log(
-      'exactAmountsDebtData',
-      this.editExpenseForm.get('exactAmountsDebtData')?.value
-    );
+
   }
 
   isChecked(id: number) {
@@ -233,6 +231,29 @@ export class EditExpenseComponent implements OnInit {
       this.router.navigate(['/groupdetails', this.expenseDetails.groupId])
     })
   }
+
+  distributionTypeChanged() {
+    if(this.distributionType?.value === "proportional"){
+      this.selectedGroupMembers = [];
+     this.exactAmountsMembers = [];
+     this.editExpenseForm.get('exactAmountsDebtData')?.setValue([])
+     this.editExpenseForm.get('userIds')?.setValue([]);
+   }
+   else if(this.distributionType?.value === "exact_amounts"){
+     this.selectedGroupMembers = [];
+     this.proportionalMembers = [];
+     this.editExpenseForm.get('proportionalDebtsData')?.setValue([]);
+     this.editExpenseForm.get('userIds')?.setValue([]);
+   }
+   else if(this.distributionType?.value === "equal"){
+     this.selectedGroupMembers = [];
+     this.proportionalMembers = [];
+     this.editExpenseForm.get('proportionalDebtsData')?.setValue([]);
+     this.exactAmountsMembers = [];
+     this.editExpenseForm.get('exactAmountsDebtData')?.setValue([])
+     this.editExpenseForm.get('userIds')?.setValue([]);
+    }
+   }
 
   get name() {
     return this.editExpenseForm.get('name');

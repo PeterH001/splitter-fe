@@ -1,5 +1,5 @@
 <div class="row mb-4 mt-4">
-  <div class="col-auto">
+  <div class="col-auto ms-2">
     <button
       type="button"
       class="btn btn-primary rounded-circle"
@@ -9,9 +9,10 @@
       <i class="bi bi-arrow-left" style="font-size: 1.5rem; color: white"></i>
     </button>
   </div>
-  <div class="col text-center">
-    <span class="display-4">Create new group</span>
+  <div class="col text-center display-4">
+    Create new group
   </div>
+  <div class="col-auto"></div>
 </div>
 <div class="row">
   <div class="col"></div>
@@ -20,7 +21,7 @@
       <div class="row mb-2">
         <div class="col">
           <div class="form-group">
-            <label for="groupName">Group name</label>
+            <label for="groupName" class="required">Group name</label>
             <input
               type="text"
               class="form-control"
@@ -61,7 +62,7 @@
                 <ng-container *ngFor="let user of users">
                   <input type="checkbox" class="btn-check" id="checkbox{{user.id}}" autocomplete="off">
                   <label class="form-check-label" for="checkbox{{user.id}}">
-                    <button type="button" class="list-group-item list-group-item-action" [ngClass]="{'active': isChecked(user.id)}" (click)="toggleSelection(user.id)">{{user.username}}</button>
+                    <button type="button" class="list-group-item list-group-item-action" [ngClass]="{'active': isChecked(user.id)}" (click)="toggleSelection(user.id)">{{user.username}} <i *ngIf="isChecked(user.id)" class="bi bi-check-lg"></i></button>
                   </label>
                 </ng-container>
               </ul>

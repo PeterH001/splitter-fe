@@ -164,6 +164,29 @@ export class CreateExpenseComponent implements OnInit {
         this.router.navigate(['/groupdetails', this.groupId]);
       });
   }
+  distributionTypeChanged() {
+    if(this.distributionType?.value === "proportional"){
+      this.selectedGroupMembers = [];
+     this.exactAmountsMembers = [];
+     this.createExpenseForm.get('exactAmountsDebtData')?.setValue([])
+     this.createExpenseForm.get('userIds')?.setValue([]);
+   }
+   else if(this.distributionType?.value === "exact_amounts"){
+     this.selectedGroupMembers = [];
+     this.proportionalMembers = [];
+     this.createExpenseForm.get('proportionalDebtsData')?.setValue([]);
+     this.createExpenseForm.get('userIds')?.setValue([]);
+   }
+   else if(this.distributionType?.value === "equal"){
+     this.selectedGroupMembers = [];
+     this.proportionalMembers = [];
+     this.createExpenseForm.get('proportionalDebtsData')?.setValue([]);
+     this.exactAmountsMembers = [];
+     this.createExpenseForm.get('exactAmountsDebtData')?.setValue([])
+     this.createExpenseForm.get('userIds')?.setValue([]);
+    }
+   }
+   
   get name() {
     return this.createExpenseForm.get('name');
   }

@@ -21,4 +21,8 @@ export class AdminGroupsComponent implements OnInit {
     })
   }
 
+  navigateToGroup(groupId: number) {
+    this.router.navigate(['/groupdetails', groupId]);
+    }
+
 }

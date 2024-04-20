@@ -11,10 +11,6 @@ export class DebtCardComponent implements OnInit{
   @Input() currency!: string;
   @Input() debt!: any;
   ngOnInit(): void {
-    // console.log("name", this.name);
-    // console.log("amount", this.amount);
-    // console.log("currency", this.currency);
-    console.log("debt", this.debt);
     
   }
 }

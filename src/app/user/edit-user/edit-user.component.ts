@@ -1,17 +1,18 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { UserDTO } from '../dto';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-profile',
-  templateUrl: './edit-profile.component.html',
-  styleUrls: ['./edit-profile.component.css'],
+  selector: 'app-edit-user',
+  templateUrl: './edit-user.component.html',
+  styleUrls: ['./edit-user.component.css']
 })
-export class EditProfileComponent implements OnInit {
+export class EditUserComponent {
   userData!: UserDTO;
+  userId!: number
 
   userDataForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -19,11 +20,12 @@ export class EditProfileComponent implements OnInit {
     firstName: new FormControl(''),
     lastName: new FormControl(''),
   });
-  constructor(private location: Location, private userService: UserService, private router: Router) {}
+  constructor(private location: Location, private userService: UserService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.userId = parseInt(this.route.snapshot.paramMap.get('id') ?? '');
     this.userService
-      .getMe()
+      .getUserById(this.userId)
       .subscribe((response) => {
         this.userData = response;
         this.userDataForm.get('username')?.setValue(this.userData.username);
@@ -35,8 +37,8 @@ export class EditProfileComponent implements OnInit {
 
   submitForm() {
     console.log(this.userDataForm.value);
-    this.userService.patchUser(this.userDataForm.value).subscribe(()=>{
-      this.router.navigate(['/user']);
+    this.userService.patchUser(this.userId, this.userDataForm.value).subscribe(()=>{
+      this.router.navigate(['/admin/users']);
     },
     (error)=>{
       if(error.status === 400){

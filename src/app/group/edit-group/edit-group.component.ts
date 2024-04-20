@@ -10,6 +10,7 @@ import { GroupService } from 'src/app/services/group.service';
 import { GroupDTO } from '../dto/group.dto';
 import { UserService } from 'src/app/services/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AdminGetUsersDTO as GetUsersDTO } from 'src/app/user/dto';
 
 @Component({
   selector: 'app-edit-group',
@@ -24,7 +25,7 @@ export class EditGroupComponent implements OnInit {
     groupName: new FormControl('', Validators.required),
     userIds: new FormControl<number[]>([]),
   });
-  users!: { id: number; username: string }[];
+  users!: GetUsersDTO[];
   selectedUsers: number[] = [];
   constructor(
     private location: Location,
