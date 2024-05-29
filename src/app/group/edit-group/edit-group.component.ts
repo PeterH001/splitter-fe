@@ -1,9 +1,5 @@
 import { Location } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  TemplateRef,
-} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/app/services/group.service';
@@ -18,12 +14,20 @@ import { AdminGetUsersDTO as GetUsersDTO } from 'src/app/user/dto';
   styleUrls: ['./edit-group.component.css'],
 })
 export class EditGroupComponent implements OnInit {
+  @ViewChild('removeUserContent', { read: TemplateRef })
+  removeUserContent!: TemplateRef<any>;
+  @ViewChild('userRemovedContent', { read: TemplateRef })
+  userRemovedContent!: TemplateRef<any>;
+  @ViewChild('leaveGroupContent', { read: TemplateRef })
+  leaveGroupContent!: TemplateRef<any>;
+
   id!: number;
   isCollapsed = true;
   groupDetails!: GroupDTO;
   editGroupForm = new FormGroup({
     groupName: new FormControl('', Validators.required),
     userIds: new FormControl<number[]>([]),
+    simplify: new FormControl<boolean>(false, Validators.required),
   });
   users!: GetUsersDTO[];
   selectedUsers: number[] = [];
@@ -41,11 +45,14 @@ export class EditGroupComponent implements OnInit {
     console.log('id: ', this.id);
     this.groupService.getGroupById(this.id).subscribe((response) => {
       this.groupDetails = response;
-      console.log(this.groupDetails.name);
+      console.log(this.groupDetails);
       this.editGroupForm.get('groupName')?.setValue(this.groupDetails.name);
       const userIds = this.groupDetails.members.map((member) => member.id);
       this.editGroupForm.get('userIds')?.setValue(userIds);
-      console.log(this.editGroupForm.get('userIds')?.value);
+      const simplify = this.groupDetails.simplify;
+      console.log('simplify: ', simplify);
+
+      this.editGroupForm.get('simplify')?.setValue(simplify);
       this.userService.getUsers().subscribe((response) => {
         this.users = response;
         console.log(this.users);
@@ -69,8 +76,10 @@ export class EditGroupComponent implements OnInit {
   }
 
   open(content: TemplateRef<any>) {
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title', centered: true });
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      centered: true,
+    });
   }
 
   isChecked(id: number) {
@@ -90,10 +99,34 @@ export class EditGroupComponent implements OnInit {
       this.router.navigate(['/groups']);
     });
   }
+
+  removeUser(userId: number) {
+    this.groupService.removeUser(this.groupDetails.id, userId).subscribe(
+      () => {
+        this.open(this.userRemovedContent);
+      },
+      (error) => {
+        this.open(this.removeUserContent);
+      }
+    );
+  }
+
+  leaveGroup(){
+    this.groupService.leaveGroup(this.groupDetails.id).subscribe(()=>{
+      this.router.navigate(['/groups']);
+    },
+    (error)=>{
+      this.open(this.leaveGroupContent);
+    }
+  )
+  }
   goBack() {
     this.location.back();
   }
   get groupName() {
     return this.editGroupForm.get('groupName');
+  }
+  get simplify() {
+    return this.editGroupForm.get('simplify');
   }
 }

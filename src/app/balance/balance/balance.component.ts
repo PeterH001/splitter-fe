@@ -44,6 +44,7 @@ export class BalanceComponent implements OnInit {
     const modalRef = this.modalService.open(SettleUpComponent, { centered: true, backdrop: 'static' });
 		modalRef.componentInstance.payerId = payerId;
 		modalRef.componentInstance.payerUsername = payerUsername;
+		modalRef.componentInstance.recieverId = recieverId;
 		modalRef.componentInstance.recieverUsername = recieverUsername;
 		modalRef.componentInstance.initialAmount = amount;
 		modalRef.componentInstance.initialCurrency = currency;

@@ -1,7 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AdminGetGroupDTO, GetMyGroupsDTO, GroupDetailsDTO } from '../group/dto';
+import {
+  AdminGetGroupDTO,
+  GetMyGroupsDTO,
+  GroupDetailsDTO,
+} from '../group/dto';
 import { GroupDTO } from '../group/dto/group.dto';
 import { FormGroup, FormControl } from '@angular/forms';
 
@@ -11,7 +15,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class GroupService {
   private baseUrl: string = 'http://localhost:3000/group';
   constructor(private http: HttpClient) {}
-  
+
   getAllGroups() {
     return this.http.get<AdminGetGroupDTO[]>(this.baseUrl);
   }
@@ -43,11 +47,25 @@ export class GroupService {
     return this.http.post(this.baseUrl, createGroupData);
   }
 
-  updateGroupById(groupId: number, updateGroupData: Partial<{ groupName: string | null; userIds: number[] | null; }>) {
+  updateGroupById(
+    groupId: number,
+    updateGroupData: Partial<{
+      groupName: string | null;
+      userIds: number[] | null;
+    }>
+  ) {
     return this.http.patch(this.baseUrl + `/${groupId}`, updateGroupData);
   }
-  
+
   deleteGroupById(groupId: number) {
     return this.http.delete(this.baseUrl + `/${groupId}`);
+  }
+
+  removeUser(groupId: number, userId: number) {
+    return this.http.patch(this.baseUrl + `/${groupId}/removeuser`, { id: userId });
+  }
+  
+  leaveGroup(groupId: number) {
+    return this.http.patch(this.baseUrl + `/${groupId}/leave`, null);
   }
 }

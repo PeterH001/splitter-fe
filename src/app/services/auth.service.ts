@@ -11,6 +11,7 @@ export class AuthService {
   login(logindata: any) {
     return this.http.post(this.baseUrl + '/signin', logindata);
   }
+  
   logout(){
     this.clear();
   }

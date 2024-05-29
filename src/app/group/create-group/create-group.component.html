@@ -44,9 +44,20 @@
         </div>
       </div>
       <div class="row mb-2">
+          <div class="col">
+            <div class="form-group">
+              <div>
+                <label class="form-check-label" for="flexSwitchCheckDefault">Simplify debts: <b>{{ simplify?.value ? 'ON' : 'OFF' }}</b></label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" aria-checked="mixed" id="flexSwitchCheckDefault" formControlName="simplify" [ngClass]="{ 'switch-success': simplify?.value, 'switch-warning': !simplify?.value}">
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="row mb-2">
         <div class="col">
           <ng-container *ngIf="true">
-            <!-- TODO: ng bootstrap accordionba tenni, így összecsukható a rengeteg user? -->
             <div>
               <button
                 type="button"

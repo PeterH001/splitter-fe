@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/app/services/group.service';
 import { GroupDetailsDTO } from '../dto';
-import { BalanceService } from 'src/app/services/balance.service';
-import { PaymentService } from 'src/app/services/payment.service';
-
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
@@ -13,12 +10,6 @@ import { PaymentService } from 'src/app/services/payment.service';
 export class GroupDetailsComponent implements OnInit {
   id!: number;
   details!: GroupDetailsDTO;
-
-  //TODO: ne any legyen
-  balanceInformation: any;
-
-  //TODO: ne any legyen
-  payments: any;
 
   expenses!: {
     id: number;
@@ -36,18 +27,43 @@ export class GroupDetailsComponent implements OnInit {
     firstName: string;
     lastName: string;
   }[];
-  balanceOfUsers!: {
-    userId: number;
-    username: string;
-    sumDebtsByCurrencies: { sumAmount: number; currency: string }[];
+  balanceOfUser!: {
+    balances: {
+      id: number;
+      groupId: number;
+      you: {
+        id: number;
+        username: string;
+      };
+      other: {
+        id: number;
+        username: string;
+      };
+      youOwe: { amount: number; currency: string }[];
+      youAreOwed: { amount: number; currency: string }[];
+    }[];
+    yourBalanceInGroup: { amount: number; currency: string }[];
+  };
+  payments!: {
+    userAId: number;
+    userAname: string;
+    userAPaid: {
+      amount: number;
+      currency: string;
+    }[];
+    userBId: number;
+    userBname: string;
+    userBPaid: {
+      amount: number;
+      currency: string;
+    }[];
   }[];
 
   loaded: boolean = false;
+  simplifyDebts: boolean = false;
 
   constructor(
     private groupService: GroupService,
-    private balanceService: BalanceService,
-    private paymentService: PaymentService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -55,24 +71,16 @@ export class GroupDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
 
-    //TODO: forkJoin
     this.groupService.getGroupDetailsById(this.id).subscribe((result) => {
       this.details = result;
       this.expenses = this.details.expenses;
       this.members = this.details.members;
-      this.balanceOfUsers = this.details.balanceOfUser;
+      this.balanceOfUser = this.details.balanceOfUser;
+      this.payments = this.details.payments;
       this.loaded = true;
     });
-
-    this.balanceService
-      .getMyBalancesByGroupId(this.id)
-      .subscribe((response) => (this.balanceInformation = response));
-
-    this.paymentService.findByGroupId(this.id).subscribe((response) => {
-      this.payments = response;
-      console.log('payments:', this.payments);
-    });
   }
+  
   goBack() {
     this.router.navigate(['/groups']);
   }

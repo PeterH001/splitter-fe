@@ -48,11 +48,23 @@
         </div>
         <div class="row mb-2">
           <div class="col">
+            <div class="form-group">
+              <div>
+                <label class="form-check-label" for="flexSwitchCheckDefault">Simplify debts: <b>{{ simplify?.value ? 'ON' : 'OFF' }}</b></label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" aria-checked="mixed" id="flexSwitchCheckDefault" formControlName="simplify" [ngClass]="{ 'switch-success': simplify?.value, 'switch-warning': !simplify?.value}">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">
             <label for="memberList">Members</label>
             <ul class="list-group" id="memberList">
               <ng-container *ngFor="let member of groupDetails.members">
                 <li class="list-group-item d-flex justify-content-between">
-                  <p>{{ member.username }}</p><button type="button" class="btn btn-sm btn-danger" (click)="open(removeUserContent)">Remove</button>
+                  <p>{{ member.username }}</p><button type="button" class="btn btn-sm btn-danger" (click)="removeUser(member.id)">Remove</button>
                 </li>
               </ng-container>
             </ul>
@@ -117,7 +129,7 @@
       type="button"
       class="btn btn-danger"
       data-bs-toggle="modal"
-      (click)="open(leaveGroupContent)"
+      (click)="leaveGroup()"
     >
       Leave group
     </button></p>
@@ -167,19 +179,32 @@
     ></button>
   </div>
   <div class="modal-body">
-    You can not delete this user, because they have expenses in the group.
+    You can not remove this user, because they have expenses in the group.
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
       Close
     </button>
+  </div>
+</ng-template>
+<ng-template #userRemovedContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Success
+    </h4>
     <button
       type="button"
-      class="btn btn-danger"
-      (click)="modal.close('Save click')"
-      disabled
-    >
-      Delete
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    User successfully removed.
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+      Close
     </button>
   </div>
 </ng-template>
@@ -202,14 +227,6 @@
     <div class="btn-group"></div>
     <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
       Close
-    </button>
-    <button
-      type="button"
-      class="btn btn-danger"
-      (click)="modal.close('Save click')"
-      disabled
-    >
-      Leave
     </button>
   </div>
 </ng-template>

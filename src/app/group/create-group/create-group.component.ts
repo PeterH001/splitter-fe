@@ -1,9 +1,8 @@
 import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GroupService } from 'src/app/services/group.service';
-import { ToastService } from 'src/app/services/toast.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -11,20 +10,20 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './create-group.component.html',
   styleUrls: ['./create-group.component.css'],
 })
-export class CreateGroupComponent implements OnInit, OnDestroy {
+export class CreateGroupComponent implements OnInit {
   createGroupForm = new FormGroup({
     groupName: new FormControl('', Validators.required),
     userIds: new FormControl<number[]>([]),
+    simplify: new FormControl<boolean>(false, Validators.required),
   });
   users!: { id: number; username: string }[];
   selectedUsers: number[] = [];
-  isCollapsed: boolean = true; 
+  isCollapsed: boolean = true;
   constructor(
     private location: Location,
     private userService: UserService,
     private groupService: GroupService,
-    private router: Router,
-    private toastService: ToastService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -37,11 +36,7 @@ export class CreateGroupComponent implements OnInit, OnDestroy {
     console.log('Form data:', this.createGroupForm.value);
     this.groupService.createGroup(this.createGroupForm.value).subscribe(() => {
       this.router.navigate(['/groups']);
-    },
-    (error)=>{
-    }
-    );
-    // Add your form submission logic here
+    });
   }
   goBack() {
     this.location.back();
@@ -54,12 +49,10 @@ export class CreateGroupComponent implements OnInit, OnDestroy {
       this.selectedUsers.push(userId);
     }
     this.createGroupForm.get('userIds')?.setValue(this.selectedUsers);
-    console.log("selectedUsers: ", this.selectedUsers);
-    
   }
 
-  isChecked(id: number){
-   return  this.selectedUsers.find(userId=> userId === id) ? true : false;
+  isChecked(id: number) {
+    return this.selectedUsers.find((userId) => userId === id) ? true : false;
   }
 
   get userIds() {
@@ -70,7 +63,7 @@ export class CreateGroupComponent implements OnInit, OnDestroy {
     return this.createGroupForm.get('groupName');
   }
 
-  ngOnDestroy(): void {
-    this.toastService.clear();
+  get simplify() {
+    return this.createGroupForm.get('simplify');
   }
 }

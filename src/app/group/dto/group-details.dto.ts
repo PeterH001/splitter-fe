@@ -19,10 +19,33 @@ export interface GroupDetailsDTO {
     isUserInvolved: boolean;
   }[];
   balanceOfUser: {
-    userId: number;
-    username: string;
-    sumDebtsByCurrencies: {
-      sumAmount: number;
+    balances: {
+      id: number;
+      groupId: number;
+      you: {
+        id: number;
+        username: string;
+      };
+      other: {
+        id: number;
+        username: string;
+      };
+      youOwe: { amount: number; currency: string }[];
+      youAreOwed: { amount: number; currency: string }[];
+    }[];
+    yourBalanceInGroup: { amount: number; currency: string }[];
+  };
+  payments: {
+    userAId: number;
+    userAname: string;
+    userAPaid: {
+      amount: number;
+      currency: string;
+    }[];
+    userBId: number;
+    userBname: string;
+    userBPaid: {
+      amount: number;
       currency: string;
     }[];
   }[];

@@ -1,8 +1,9 @@
-export interface GroupDTO{
+export interface GroupDTO {
+  id: number;
+  name: string;
+  simplify: boolean;
+  members: {
     id: number;
-    name: string;
-    members: {
-        id: number;
-        username: string
-    }[]
+    username: string;
+  }[];
 }
